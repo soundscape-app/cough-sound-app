@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "cough-sound-app",
-    "slug": "cough-sound-app",
+    "name": "cough",
+    "slug": "cough",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "cough",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
