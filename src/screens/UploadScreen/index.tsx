@@ -1,9 +1,9 @@
-import { StyleSheet, Alert, Platform, TouchableOpacity } from 'react-native';
+import { StyleSheet, Alert, Platform, TouchableOpacity, TextInput } from 'react-native';
 import * as React from 'react';
 import { Audio } from 'expo-av';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
-import { Foundation } from '@expo/vector-icons';
+import { Foundation, MaterialIcons } from '@expo/vector-icons';
 import { AreaChart, Grid } from 'react-native-svg-charts';
 import * as shape from 'd3-shape'
 import { Picker } from '@react-native-picker/picker';
@@ -20,12 +20,15 @@ export default function UploadScreen({ navigation }: any) {
   // const navigation = useNavigation();
   const [recording, setRecording] = React.useState(null as any);
   const [sound, setSound] = React.useState(null as any);
-  const [location, setLocation] = React.useState('' as string);
   const [status, setStatus] = React.useState(null as any);
-  const [player, setPlayer] = React.useState(() => { });
   const [isRecording, setIsRecording] = React.useState(false);
+  
+  const [location, setLocation] = React.useState('' as string);
+  const [duration, setDuration] = React.useState(0);
   const [data, setData] = React.useState([] as any);
-  const [selection1, setSelection1] = React.useState(0);
+  const [selection1, setSelection1] = React.useState('없음');
+  const [selection2, setSelection2] = React.useState('안함');
+  const [text, setText] = React.useState('');
 
   React.useEffect(() => {
     (async () => {
@@ -60,6 +63,30 @@ export default function UploadScreen({ navigation }: any) {
     }
   };
 
+  const durationFormat = (duration: any) => (
+    new Date(duration ?? 0).toISOString().substr(11, 8)
+  )
+
+  function reset() {
+    setData([]);
+    setSelection1('없음');
+    setSelection2('안함');
+    setText('');
+    setDuration(0);
+    setLocation('');
+  }
+
+  async function upload() {
+    if (location !== '') {
+      ProcessStore.uploadAudio(location).then(() => {
+        reset();
+        Alert.alert('Upload completed');
+      }).catch((e: any) => {
+        console.log(e);
+      })
+    }
+  }
+
   async function startRecording() {
     try {
       console.log('Requesting permissions..');
@@ -90,17 +117,15 @@ export default function UploadScreen({ navigation }: any) {
     console.log('Stopping recording..');
     setRecording(undefined);
     setIsRecording(false);
+    setDuration(status?.durationMillis);
     await recording.stopAndUnloadAsync();
     const uri = recording.getURI();
     setLocation(uri);
     console.log('Recording stopped and stored at', uri);
     console.log('Loading Sound');
-    const { sound } = await Audio.Sound.createAsync(
-      { uri }
-    );
+    const { sound } = await Audio.Sound.createAsync({ uri });
     console.log(sound);
     setSound(sound);
-    await ProcessStore.uploadAudio(uri);
   }
 
   return (
@@ -114,26 +139,23 @@ export default function UploadScreen({ navigation }: any) {
       >
         <Grid />
       </AreaChart>
-      {/* <View style={{ width: '100%', paddingHorizontal: 20 }}>
-        <Text style={styles.textNormal}>등가소음도</Text>
-        <Text style={styles.textNormal}>최고소음도</Text>
-        <Text style={styles.textNormal}>최고소음도 기준 초과</Text>
-      </View> */}
       <TouchableOpacity 
         onPress={isRecording ? stopRecording : startRecording} 
         activeOpacity={0.8}
-        style={{ width: 180, height: 180, justifyContent: 'center', alignItems: 'center' }}
+        style={{ width: 120, height: 120, justifyContent: 'center', alignItems: 'center' }}
       >
         <Foundation 
           name="record" 
-          size={isRecording ? Math.min(120, Math.max(100 + Math.round(status?.metering ?? 0), 30))*1.5 : 80} 
+          size={isRecording ? Math.min(120, Math.max(100 + Math.round(status?.metering ?? 0), 30)) : 80} 
           color={isRecording ? "red" : "pink"} 
         />
       </TouchableOpacity>
-      <Text style={{ fontWeight: 'bold', fontSize: 28 }}>{Math.round(status?.metering ?? 0)}dB</Text>
-      <Text style={{ fontSize: 14 }}>{new Date(status?.durationMillis ?? 0).toISOString().substr(11, 8)}</Text>
-      <View style={{ width: '100%', paddingHorizontal: 20 }}>
-        <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center'}}>
+      <View style={{ justifyContent: 'center' , alignItems: 'center' }}>
+        <Text style={{ fontWeight: 'bold', fontSize: 28 }}>{Math.round(status?.metering ?? 0)}dB</Text>
+        <Text style={{ fontSize: 14 }}>{durationFormat(status?.durationMillis)}</Text>
+      </View>
+      <View style={{ width: '100%', paddingHorizontal: 20, marginTop: 20 }}>
+        <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', marginVertical: 10 }}>
           <Text style={styles.textNormal}>기저 질환</Text>
           <Picker
             selectedValue={selection1}
@@ -141,30 +163,79 @@ export default function UploadScreen({ navigation }: any) {
               setSelection1(itemValue)
             }
             mode="dropdown"
-            style={{ width: 100, height: 40, backgroundColor: 'transparent' }}
+            style={{ width: 120, height: 40, marginHorizontal: 10, backgroundColor: 'transparent' }}
             itemStyle={{ fontSize: 14, height: 40, fontWeight: 'bold'}}
           >
+            <Picker.Item label="없음" value="없음" />
             <Picker.Item label="천식" value="천식" />
             <Picker.Item label="당뇨" value="당뇨" />
             <Picker.Item label="심장병" value="심장병" />
             <Picker.Item label="직접 입력" value="직접 입력" />
           </Picker>
-
+          {selection1 == '직접 입력' && <TextInput
+              style={{ borderRadius: 10, width: 120, height: 30, paddingHorizontal: 10, backgroundColor: 'rgba(0,0,0,0.05)'}}
+              onChangeText={setText}
+              value={text}
+              placeholder="Enter here"
+            />
+          }
         </View>
-        <Text style={styles.textNormal}>흡연 여부</Text>
+        <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', marginTop: 10 }}>
+          <Text style={styles.textNormal}>흡연 여부</Text>
+          <Picker
+            selectedValue={selection2}
+            onValueChange={(itemValue, itemIndex) =>
+              setSelection2(itemValue)
+            }
+            mode="dropdown"
+            style={{ width: 120, height: 40, marginHorizontal: 10, backgroundColor: 'transparent' }}
+            itemStyle={{ fontSize: 14, height: 40, fontWeight: 'bold' }}
+          >
+            <Picker.Item label="안함" value="안함" />
+            <Picker.Item label="보통" value="보통" />
+            <Picker.Item label="매일" value="매일" />
+          </Picker>
+        </View>
+      </View>
+      <View style={{ 
+        flexDirection: 'row', width: '100%', justifyContent: 'space-between', 
+        paddingHorizontal: 20, marginVertical: 20 
+      }}>
+        <TouchableOpacity 
+          style={{
+            backgroundColor: 'rgba(0,0,0,0.3)', //'rgba(25, 132, 213, 0.8)',
+            borderRadius: 10, width: 50, height: 50,
+            justifyContent: 'center', alignItems: 'center'
+          }}
+          activeOpacity={0.8}
+          onPress={reset}
+        >
+          <MaterialIcons name="refresh" size={24} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={{
+            backgroundColor: location !== '' ? 'rgba(25, 132, 213, 0.8)' : 'rgba(0,0,0,0.3)',
+            borderRadius: 10, height: 50, marginLeft: 20, flex: 1,
+            alignItems: 'center', justifyContent: 'center',
+            flexDirection: 'row',
+          }}
+          activeOpacity={0.8}
+          onPress={upload}
+        >
+          <MaterialIcons name="file-upload" size={24} color="white" />
+          <Text style={{ color: 'white', marginHorizontal: 10 }}>UPLOAD ({durationFormat(duration)})</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
-
-// const 
 
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between'
   },
   title: {
     fontSize: 20,
