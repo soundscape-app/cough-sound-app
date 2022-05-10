@@ -18,6 +18,8 @@ import NotFoundScreen from '~/screens/NotFoundScreen';
 import HomeScreen from '~/screens/HomeScreen';
 import HelpScreen from '~/screens/HelpScreen';
 import SurveyScreen from '~/screens/SurveyScreen';
+import RecordScreen from '~/screens/RecordScreen';
+import UploadScreen from '~/screens/UploadScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '~/types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -42,6 +44,8 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Main" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="Survey" component={SurveyScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Record" component={RecordScreen} options={{ headerShown: true }} />
+      <Stack.Screen name="Upload" component={UploadScreen} options={{ headerShown: true }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
@@ -71,20 +75,20 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<'Home'>) => ({
           title: 'Home',
           tabBarIcon: ({ color }) => <Entypo name="home" size={24} color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
+          // headerRight: () => (
+          //   <Pressable
+          //     onPress={() => navigation.navigate('Modal')}
+          //     style={({ pressed }) => ({
+          //       opacity: pressed ? 0.5 : 1,
+          //     })}>
+          //     <FontAwesome
+          //       name="info-circle"
+          //       size={25}
+          //       color={Colors[colorScheme].text}
+          //       style={{ marginRight: 15 }}
+          //     />
+          //   </Pressable>
+          // ),
         })}
       />
       <BottomTab.Screen

@@ -1,26 +1,43 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { NativeFormsModal } from 'native-forms';
 
 import EditScreenInfo from '~/components/EditScreenInfo';
 import { Text, View } from '~/components/Themed';
+import MainButton from '~/components/MainButton';
 import { RootTabScreenProps } from '~/types';
 import { Images } from '~/common';
 
 
 export default function Home({ navigation }: any) {
+  const [ showForm, setShowForm ] = React.useState(false);
   return (
     <View style={styles.container}>
       {/* <Text style={styles.title}>Home</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <EditScreenInfo path="/screens/Home.tsx" /> */}
       <Image source={Images.home_cough} style={{ width: 200, height: 200, margin: 50 }} />
-      <TouchableOpacity 
-        onPress={() => navigation.navigate('Survey')}
+      {/* <TouchableOpacity 
+        onPress={() => setShowForm(true)}
         style={styles.button}
       >
         <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 18 }}>START</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+      <MainButton onPress={() => {
+        // setShowForm(true)
+        navigation.navigate('Upload');
+      }} title="START"/>
+      <NativeFormsModal 
+        visible={showForm}
+        // form="https://form.nativeforms.com/YRWeX1jZmEjSaZDVT1Db"
+        formJSON={require('./survey.json')}
+        onClose={() => setShowForm(false)}
+        onSend={() => {
+          setShowForm(false);
+          navigation.navigate('Record');
+        }}
+      />
     </View>
   );
 }
