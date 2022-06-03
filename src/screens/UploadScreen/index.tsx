@@ -14,6 +14,7 @@ import { RootTabScreenProps } from '../../types';
 import useInterval from '../../hooks/useInterval';
 
 import { TVideo, ProcessStore } from '~/stores/ProcessStore';
+import Agreement from './agreement';
 
 
 export default function UploadScreen({ navigation }: any) {
@@ -29,6 +30,8 @@ export default function UploadScreen({ navigation }: any) {
   const [selection1, setSelection1] = React.useState('없음');
   const [selection2, setSelection2] = React.useState('안함');
   const [text, setText] = React.useState('');
+
+  const [agree, setAgree] = React.useState(false);
 
   React.useEffect(() => {
     (async () => {
@@ -127,6 +130,8 @@ export default function UploadScreen({ navigation }: any) {
     console.log(sound);
     setSound(sound);
   }
+
+  if (!agree) return <Agreement onAgree={() => setAgree(true)} />;
 
   return (
     <View style={styles.container}>

@@ -14,12 +14,14 @@ import * as ImagePicker from 'expo-image-picker';
 import { Video, Audio, AVPlaybackStatus } from 'expo-av';
 
 import { Text, View } from '~/components/Themed';
+import Agreement from './agreement';
 import { BaseStyle, RouteName, Images } from '~/common';
 
 
 import { AntDesign, MaterialCommunityIcons, Feather, Entypo } from '@expo/vector-icons';
 // import AuthStore from '~/stores/AuthStore';
 import { TVideo, ProcessStore } from '~/stores/ProcessStore';
+
 
 const Record = observer(() => {
   const navigation = useNavigation();
@@ -28,6 +30,7 @@ const Record = observer(() => {
   const [location, setLocation] = React.useState('' as string);
   const [status, setStatus] = React.useState(null as any);
   const [player, setPlayer] = React.useState(() => {});
+  const [agree, setAgree] = React.useState(false);
 
   React.useEffect(() => {
     (async () => {
@@ -169,6 +172,8 @@ const Record = observer(() => {
   //   } as TVideo;
   //   ProcessStore.setVideo(video_data);
   // }
+
+  if (!agree) return <Agreement onAgree={() => setAgree(true)} />;
 
   return (
     <View style={styles.container}>
