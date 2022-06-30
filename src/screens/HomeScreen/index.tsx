@@ -9,8 +9,6 @@ import MainButton from '~/components/MainButton';
 import { RootTabScreenProps } from '~/types';
 import { Images } from '~/common';
 
-import { ProcessStore } from '~/stores/ProcessStore';
-
 export default function Home({ navigation }: any) {
   return (
     <View style={styles.container}>

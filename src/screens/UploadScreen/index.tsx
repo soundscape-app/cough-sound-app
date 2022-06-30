@@ -31,8 +31,6 @@ export default function UploadScreen({ navigation }: any) {
   const [selection2, setSelection2] = React.useState('안함');
   const [text, setText] = React.useState('');
 
-  const [agree, setAgree] = React.useState(false);
-
   React.useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
@@ -131,8 +129,6 @@ export default function UploadScreen({ navigation }: any) {
     setSound(sound);
   }
 
-  if (!agree) return <Agreement onAgree={() => setAgree(true)} />;
-
   return (
     <View style={styles.container}>
       <AreaChart
@@ -203,7 +199,7 @@ export default function UploadScreen({ navigation }: any) {
           </Picker>
         </View>
       </View> */}
-      
+
       <View style={{ 
         flexDirection: 'row', width: '100%', justifyContent: 'space-between', 
         paddingHorizontal: 20, marginVertical: 20 

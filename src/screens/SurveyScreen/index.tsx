@@ -3,13 +3,16 @@ import { StyleSheet, Button, ScrollView, Text, TextInput, View } from 'react-nat
 import NativeForms, { NativeFormsModal } from 'native-forms';
 import { ProcessStore } from '~/stores/ProcessStore';
 
+import Agreement from './agreement';
 
 export default function Survey({ navigation }: any) {
-  // const [showForm, setShowForm] = React.useState(false);
+  const [agree, setAgree] = React.useState(false);
 
   React.useEffect(() => {
     ProcessStore.resetSurvey();
   },[]);
+
+  if (!agree) return <Agreement onAgree={() => setAgree(true)} />;
 
   return (
     <View style={styles.container}>
