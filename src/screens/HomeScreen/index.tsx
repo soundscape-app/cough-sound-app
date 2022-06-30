@@ -13,12 +13,20 @@ export default function Home({ navigation }: any) {
   return (
     <View style={styles.container}>
       <Image source={Images.home_cough} style={{ width: 200, height: 200, margin: 50 }} />
-      <MainButton onPress={() => {
-        navigation.navigate('Survey');
-      }} title="START"/>
+      <Button onPress={() => navigation.navigate('Survey')} title="START" />
     </View>
   );
 }
+
+const Button = ({ onPress, title }: any) => (
+  <TouchableOpacity
+    onPress={onPress}
+    style={styles.button}
+    activeOpacity={0.7}
+  >
+    <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 18 }}>{title}</Text>
+  </TouchableOpacity>
+)
 
 const styles = StyleSheet.create({
   container: {
@@ -36,17 +44,19 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   button: {
-    backgroundColor: '#4F5EFF',
-    borderRadius: 30,
-    paddingHorizontal: 30,
-    paddingVertical: 20,
+    width: 130,
+    height: 130,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(25, 132, 213, 0.8)',
+    borderRadius: 100,
     borderColor: 'white',
     borderWidth: 2,
     // Shadow
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
+    // elevation: 5,
+    // shadowColor: '#000',
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.8,
+    // shadowRadius: 2,
   }
 });
