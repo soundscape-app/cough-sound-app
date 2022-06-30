@@ -16,7 +16,6 @@ export default function Home({ navigation }: any) {
     <View style={styles.container}>
       <Image source={Images.home_cough} style={{ width: 200, height: 200, margin: 50 }} />
       <MainButton onPress={() => {
-        setShowForm(true);
         navigation.navigate('Survey');
       }} title="START"/>
     </View>
