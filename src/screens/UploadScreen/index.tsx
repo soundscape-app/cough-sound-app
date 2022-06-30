@@ -159,7 +159,8 @@ export default function UploadScreen({ navigation }: any) {
         <Text style={{ fontWeight: 'bold', fontSize: 28 }}>{Math.round(status?.metering ?? 0)}dB</Text>
         <Text style={{ fontSize: 14 }}>{durationFormat(status?.durationMillis)}</Text>
       </View>
-      <View style={{ width: '100%', paddingHorizontal: 20, marginTop: 20 }}>
+
+      {/* <View style={{ width: '100%', paddingHorizontal: 20, marginTop: 20 }}>
         <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', marginVertical: 10 }}>
           <Text style={styles.textNormal}>기저 질환</Text>
           <Picker
@@ -201,7 +202,8 @@ export default function UploadScreen({ navigation }: any) {
             <Picker.Item label="매일" value="매일" />
           </Picker>
         </View>
-      </View>
+      </View> */}
+      
       <View style={{ 
         flexDirection: 'row', width: '100%', justifyContent: 'space-between', 
         paddingHorizontal: 20, marginVertical: 20 
