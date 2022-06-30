@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { NativeFormsModal } from 'native-forms';
+import NativeForms, { NativeFormsModal } from 'native-forms';
 
 import EditScreenInfo from '~/components/EditScreenInfo';
 import { Text, View } from '~/components/Themed';
@@ -12,26 +12,13 @@ import { Images } from '~/common';
 import { ProcessStore } from '~/stores/ProcessStore';
 
 export default function Home({ navigation }: any) {
-  const [ showForm, setShowForm ] = React.useState(false);
   return (
     <View style={styles.container}>
       <Image source={Images.home_cough} style={{ width: 200, height: 200, margin: 50 }} />
       <MainButton onPress={() => {
         setShowForm(true);
-        ProcessStore.resetSurvey();
+        navigation.navigate('Survey');
       }} title="START"/>
-      <NativeFormsModal
-        visible={showForm}
-        form="https://form.nativeforms.com/YRWeX1jZmEjSaZDVT1Db"
-        // formJSON={require('./survey.json')}
-        onClose={() => setShowForm(false)}
-        onSend={(surveyData: any) => {
-          console.log(surveyData);
-          ProcessStore.setSurvey(surveyData);
-          setShowForm(false);
-          navigation.navigate('Upload');
-        }}
-      />
     </View>
   );
 }

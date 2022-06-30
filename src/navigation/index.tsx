@@ -43,8 +43,8 @@ function RootNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Main" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="Survey" component={SurveyScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Record" component={RecordScreen} options={{ headerShown: true }} />
+      <Stack.Screen name="Survey" component={SurveyScreen} options={{ headerShown: true }} />
+      {/* <Stack.Screen name="Record" component={RecordScreen} options={{ headerShown: true }} /> */}
       <Stack.Screen name="Upload" component={UploadScreen} options={{ headerShown: true }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
