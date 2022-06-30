@@ -9,33 +9,27 @@ import MainButton from '~/components/MainButton';
 import { RootTabScreenProps } from '~/types';
 import { Images } from '~/common';
 
+import { ProcessStore } from '~/stores/ProcessStore';
 
 export default function Home({ navigation }: any) {
   const [ showForm, setShowForm ] = React.useState(false);
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.title}>Home</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/Home.tsx" /> */}
       <Image source={Images.home_cough} style={{ width: 200, height: 200, margin: 50 }} />
-      {/* <TouchableOpacity 
-        onPress={() => setShowForm(true)}
-        style={styles.button}
-      >
-        <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 18 }}>START</Text>
-      </TouchableOpacity> */}
       <MainButton onPress={() => {
-        // setShowForm(true)
-        navigation.navigate('Upload');
+        setShowForm(true);
+        ProcessStore.resetSurvey();
       }} title="START"/>
-      <NativeFormsModal 
+      <NativeFormsModal
         visible={showForm}
-        // form="https://form.nativeforms.com/YRWeX1jZmEjSaZDVT1Db"
-        formJSON={require('./survey.json')}
+        form="https://form.nativeforms.com/YRWeX1jZmEjSaZDVT1Db"
+        // formJSON={require('./survey.json')}
         onClose={() => setShowForm(false)}
-        onSend={() => {
+        onSend={(surveyData: any) => {
+          console.log(surveyData);
+          ProcessStore.setSurvey(surveyData);
           setShowForm(false);
-          navigation.navigate('Record');
+          navigation.navigate('Upload');
         }}
       />
     </View>

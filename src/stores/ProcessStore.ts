@@ -25,7 +25,18 @@ export type TResult = {
 
 export const ProcessStore = observable({
 
-    uploadAudio: action(async (location: string, survey: Object={}) => {
+    location: '' as string,
+    survey: {} as Object,
+
+    setSurvey: action((survey: Object) => {
+        ProcessStore.survey = survey;
+    }),
+
+    resetSurvey: action(() => {
+        ProcessStore.survey = {};
+    }),
+
+    uploadAudio: action(async (location: string, survey: Object=ProcessStore.survey) => {
         try {
             const formData = new FormData();
             formData.append('audio', {
