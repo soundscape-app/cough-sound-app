@@ -1,6 +1,7 @@
 import ExpoConstants from 'expo-constants';
 
 const SERVER_URL = 'http://hyusna.kro.kr:8010';
+// const SERVER_URL = 'http://localhost:8000';
 // const SERVER_URL = 'http://13.125.120.72:8000';
 // const SERVER_URL = 'http://hyusoundlab.kro.kr:5000';
 

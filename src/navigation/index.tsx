@@ -18,6 +18,7 @@ import NotFoundScreen from '~/screens/NotFoundScreen';
 import HomeScreen from '~/screens/HomeScreen';
 import HelpScreen from '~/screens/HelpScreen';
 import SurveyScreen from '~/screens/SurveyScreen';
+import ResultScreen from '~/screens/ResultScreen';
 import RecordScreen from '~/screens/RecordScreen';
 import UploadScreen from '~/screens/UploadScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '~/types';
@@ -43,6 +44,7 @@ function RootNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Main" component={BottomTabNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name="Result" component={ResultScreen} options={{ headerShown: true }} />
       <Stack.Screen name="Survey" component={SurveyScreen} options={{ headerShown: true }} />
       {/* <Stack.Screen name="Record" component={RecordScreen} options={{ headerShown: true }} /> */}
       <Stack.Screen name="Upload" component={UploadScreen} options={{ headerShown: true }} />

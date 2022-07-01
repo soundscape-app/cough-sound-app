@@ -14,7 +14,6 @@ import { RootTabScreenProps } from '../../types';
 import useInterval from '../../hooks/useInterval';
 
 import { TVideo, ProcessStore } from '~/stores/ProcessStore';
-import Agreement from './agreement';
 
 
 export default function UploadScreen({ navigation }: any) {
@@ -27,11 +26,9 @@ export default function UploadScreen({ navigation }: any) {
   const [location, setLocation] = React.useState('' as string);
   const [duration, setDuration] = React.useState(0);
   const [data, setData] = React.useState([] as any);
-  const [selection1, setSelection1] = React.useState('없음');
-  const [selection2, setSelection2] = React.useState('안함');
-  const [text, setText] = React.useState('');
 
   React.useEffect(() => {
+    ProcessStore.resetResult();
     (async () => {
       if (Platform.OS !== 'web') {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -70,18 +67,15 @@ export default function UploadScreen({ navigation }: any) {
 
   function reset() {
     setData([]);
-    setSelection1('없음');
-    setSelection2('안함');
-    setText('');
     setDuration(0);
     setLocation('');
   }
 
   async function upload() {
     if (location !== '') {
+      navigation.replace('Result');
       ProcessStore.uploadAudio(location).then(() => {
         reset();
-        Alert.alert('Upload completed');
       }).catch((e: any) => {
         console.log(e);
       })

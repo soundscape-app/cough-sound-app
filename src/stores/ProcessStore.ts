@@ -23,10 +23,10 @@ export type TResult = {
     status: TStatus;
 };
 
-export const ProcessStore = observable({
+export const ProcessStore: any = observable({
 
-    location: '' as string,
     survey: {} as Object,
+    result: {} as Object,
 
     setSurvey: action((survey: Object) => {
         ProcessStore.survey = survey;
@@ -36,17 +36,23 @@ export const ProcessStore = observable({
         ProcessStore.survey = {};
     }),
 
+    resetResult: action(() => {
+        ProcessStore.result = {};
+    }),
+
     uploadAudio: action(async (location: string, survey: Object=ProcessStore.survey) => {
         try {
             const formData = new FormData();
+            const ext = location.split('.').pop();
             formData.append('audio', {
                 uri: location,
-                name: 'audio.wav',
-                type: 'audio/wav',
+                name: 'audio.' + ext,
+                type: 'audio/' + ext,
             });
             formData.append('survey', JSON.stringify(survey))
             console.log('[Starting upload]', formData);
-            const { data } = await Request.post('/upload/audio', formData);
+            const data = await Request.post('/upload/audio', formData);
+            ProcessStore.result = data;
             console.log('[Upload completed]', data);
             return data;
         } catch (e) {
