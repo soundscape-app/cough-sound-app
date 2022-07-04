@@ -7,11 +7,21 @@ import EditScreenInfo from '~/components/EditScreenInfo';
 import { Text, View } from '~/components/Themed';
 import MainButton from '~/components/MainButton';
 import { RootTabScreenProps } from '~/types';
-import { Images } from '~/common';
+import { Images, BaseStyle } from '~/common';
+
+import Lottie from 'lottie-react-native';
 
 export default function Home({ navigation }: any) {
   return (
     <View style={styles.container}>
+      {/* <View style={{ margin: 50 }}>
+        <Lottie
+          source={require('./coughing.json')}
+          style={{ width: 300, height: 300 }}
+          autoPlay loop
+          resizeMode='contain'
+        />
+      </View> */}
       <Image source={Images.home_cough} style={{ width: 200, height: 200, margin: 50 }} />
       <Button onPress={() => navigation.navigate('Survey')} title="START" />
     </View>
@@ -48,7 +58,7 @@ const styles = StyleSheet.create({
     height: 130,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(25, 132, 213, 0.8)',
+    backgroundColor: BaseStyle.color.theme,
     borderRadius: 100,
     borderColor: 'white',
     borderWidth: 2,

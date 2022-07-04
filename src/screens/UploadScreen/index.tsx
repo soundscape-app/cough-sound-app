@@ -1,7 +1,6 @@
 import { StyleSheet, Alert, Platform, TouchableOpacity, TextInput } from 'react-native';
 import * as React from 'react';
 import { Audio } from 'expo-av';
-import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import { Foundation, MaterialIcons } from '@expo/vector-icons';
 import { AreaChart, Grid } from 'react-native-svg-charts';
@@ -12,6 +11,8 @@ import EditScreenInfo from '../../components/EditScreenInfo';
 import { Text, View } from '../../components/Themed';
 import { RootTabScreenProps } from '../../types';
 import useInterval from '../../hooks/useInterval';
+
+import { BaseStyle } from '~/common';
 
 import { TVideo, ProcessStore } from '~/stores/ProcessStore';
 
@@ -48,18 +49,6 @@ export default function UploadScreen({ navigation }: any) {
   useInterval(() => {
     setData([...data, Math.round(status?.metering)]);
   }, isRecording ? 100 : null);
-
-  const recordAudio = async () => {
-    try {
-      const { recording: recordingObject, status } = await Audio.Recording.createAsync(
-        Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
-      );
-      console.log(status, recordingObject);
-    } catch (error) {
-      console.log(error);
-
-    }
-  };
 
   const durationFormat = (duration: any) => (
     new Date(duration ?? 0).toISOString().substr(11, 8)
@@ -130,7 +119,7 @@ export default function UploadScreen({ navigation }: any) {
         data={data}
         contentInset={{ top: 30, bottom: 30 }}
         curve={shape.curveNatural}
-        svg={{ fill: 'rgba(25, 132, 213, 0.8)' }}
+        svg={{ fill: BaseStyle.color.theme }}
       >
         <Grid />
       </AreaChart>
@@ -200,7 +189,7 @@ export default function UploadScreen({ navigation }: any) {
       }}>
         <TouchableOpacity 
           style={{
-            backgroundColor: 'rgba(0,0,0,0.3)', //'rgba(25, 132, 213, 0.8)',
+            backgroundColor: 'rgba(0,0,0,0.3)', //BaseStyle.color.theme,
             borderRadius: 10, width: 50, height: 50,
             justifyContent: 'center', alignItems: 'center'
           }}
@@ -211,7 +200,7 @@ export default function UploadScreen({ navigation }: any) {
         </TouchableOpacity>
         <TouchableOpacity 
           style={{
-            backgroundColor: location !== '' ? 'rgba(25, 132, 213, 0.8)' : 'rgba(0,0,0,0.3)',
+            backgroundColor: location !== '' ? BaseStyle.color.theme : 'rgba(0,0,0,0.3)',
             borderRadius: 10, height: 50, marginLeft: 20, flex: 1,
             alignItems: 'center', justifyContent: 'center',
             flexDirection: 'row',

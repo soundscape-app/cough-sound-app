@@ -1,11 +1,13 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 
 import EditScreenInfo from '~/components/EditScreenInfo';
 import { Text, View } from '~/components/Themed';
 import { RootTabScreenProps } from '~/types';
+// import LottieView from 'lottie-react-native';
 import LottieView from 'lottie-react-native';
 import { VictoryBar, VictoryLabel } from "victory-native";
+import { Images, BaseStyle } from '~/common';
 
 import { observer } from 'mobx-react';
 import { TVideo, ProcessStore } from '~/stores/ProcessStore';
@@ -13,34 +15,52 @@ import { TVideo, ProcessStore } from '~/stores/ProcessStore';
 
 const Result = observer(({ navigation }: any) => {
 
+  const animation = React.useRef(null);
+
+  React.useEffect(() => {
+    ProcessStore.setLoading();
+    return () => {
+      ProcessStore.setLoading();
+    }
+  }, []);
+
+  if (ProcessStore.loading) return (
+    <View style={styles.container}>
+      {/* <LottieView
+        source={require('./loading-2.json')}
+        style={{ width: 200, height: 200 }}
+        autoPlay loop
+        resizeMode='contain'
+        ref={animation}
+      /> */}
+      <ActivityIndicator size="large" color={BaseStyle.color.theme} />
+      {/* <Image source={Images.loading} style={{ width: 200, height: 200, margin: 50 }} /> */}
+      <Text style={styles.text}>Analyzing...</Text>
+    </View>
+  )
+  
   return (
     <View style={styles.container}>
-      {ProcessStore.result?.result === undefined ? (
-        <View style={styles.container}>
-          <LottieView
-            source={require('./loading-2.json')}
-            style={{ width: 200, height: 200 }}
-            autoPlay loop
-            resizeMode='contain'
-          />
-          <Text style={styles.text}>Analyzing...</Text>
-        </View>
-      ) : (
-        <View style={styles.container}>
-          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-            {ProcessStore.result?.result.rates.map((item: any, index: number) => (
-              <PercentBar key={index} label={item.name} value={item.rate} color={item.color ?? 'black'} />
-            ))}
+        {ProcessStore.result?.result?.highest ? 
+          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={styles.title}>{ProcessStore.result?.result?.highest.name}</Text>
+            <Text style={styles.text}>일 가능성이</Text>
+            <Text style={styles.title}>{Math.round(ProcessStore.result?.result?.highest.rate*100)}%</Text>
+            <Text style={styles.text}>로 가장 높습니다</Text>
           </View>
-          <View style={{ flexDirection: 'row', paddingHorizontal: 16, marginVertical: 20 }}>
-            <Button onPress={() => navigation.replace('Survey')} title={"설문부터\n다시하기"} style={{ flex: 1 }} />
-            <View style={{ width: 8 }}/>
-            <Button onPress={() =>  navigation.replace('Upload')} title={"녹음부터\n다시하기"} style={{ flex: 1 }} />
-          </View>
-        </View>
-      )}
+        : null}
+      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        {ProcessStore.result?.result?.rates ? ProcessStore.result.result.rates.map((item: any, index: number) => (
+          <PercentBar key={index} label={item.name} value={item.rate} color={item.color ?? 'black'} />
+        )) : null}
+      </View>
+      <View style={{ flexDirection: 'row', paddingHorizontal: 16, marginVertical: 20 }}>
+        <Button onPress={() => navigation.replace('Survey')} title={"설문부터\n다시하기"} style={{ flex: 1 }} />
+        <View style={{ width: 8 }} />
+        <Button onPress={() => navigation.replace('Upload')} title={"녹음부터\n다시하기"} style={{ flex: 1 }} />
+      </View>
     </View>
-  );
+  )
 });
 
 
@@ -58,7 +78,8 @@ const PercentBar = ({ label, value, color='black' }: { label: string, value: num
       <View style={{ flex: 4, height: 30, flexDirection: 'row', alignItems: 'center' }} onLayout={onLayout}>
         <View style={{ width: parentWeight, height: 30, backgroundColor: color, opacity: 0.2, borderRadius: 8 }} />
         <View style={{ width: parentWeight * value, height: 30, backgroundColor: color, borderRadius: 8, position: 'absolute', justifyContent: 'center', alignItems: 'flex-end'}} >
-          <Text style={{ color: 'white', paddingHorizontal: 4, fontSize: 12 }} numberOfLines={1}>{Math.round(value*100)}%</Text>
+          {value > 0.1 && <Text style={{ color: 'white', paddingHorizontal: 4, fontSize: 12 }} numberOfLines={1}>{Math.round(value * 100)}%</Text>}
+          {value <= 0.1 && <Text style={{ color: color, paddingHorizontal: 4, fontSize: 12, marginRight: -parentWeight*0.1 }} numberOfLines={1}>{Math.round(value * 100)}%</Text>}
         </View>
       </View>
     </View>
@@ -86,10 +107,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-evenly',
   },
+  title: {
+    fontSize: 60,
+    fontWeight: 'bold',
+    color: BaseStyle.color.theme,
+    marginBottom: 5,
+  },
   text: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: 'rgba(25, 132, 213, 0.8)'
+    color: BaseStyle.color.theme,
+    marginBottom: 10,
   },
   separator: {
     marginVertical: 30,
@@ -100,7 +128,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(25, 132, 213, 0.8)',
+    backgroundColor: BaseStyle.color.theme,
     borderRadius: 8,
   }
 });

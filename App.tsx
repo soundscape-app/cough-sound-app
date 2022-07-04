@@ -7,6 +7,10 @@ import useColorScheme from '~/hooks/useColorScheme';
 import Navigation from '~/navigation';
 
 import * as Updates from 'expo-updates';
+import ErrorBoundary from 'react-native-error-boundary';
+import * as ErrorRecovery from 'expo-error-recovery';
+import * as Sentry from 'sentry-expo';
+
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -56,10 +60,18 @@ export default function App() {
     return null;
   } else {
     return (
-      <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar />
-      </SafeAreaProvider>
+      <ErrorBoundary
+        onError={(err, stack) => {
+          console.log(err);
+          ErrorRecovery.setRecoveryProps({ err });
+          Sentry.Native.captureException(err);
+        }}
+      >
+        <SafeAreaProvider>
+          <Navigation colorScheme={colorScheme} />
+          <StatusBar />
+        </SafeAreaProvider>
+      </ErrorBoundary>
     );
   }
 }
