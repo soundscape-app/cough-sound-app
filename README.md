@@ -17,3 +17,4 @@ expo start
 ```
 expo build:{빌드하고자 하는 os}
 ```
+.
