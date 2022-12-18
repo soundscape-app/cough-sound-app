@@ -17,7 +17,7 @@ export default function Survey({ navigation }: any) {
   return (
     <View style={styles.container}>
       <NativeForms 
-        form="https://form.nativeforms.com/YRWeX1jZmEjSaZDVT1Db"
+        form="https://form.nativeforms.com/zIXe20jZmQ0ZJpWSJ1Db"
         // formJSON={require('./survey.json')}
         onClose={() => navigation.goBack()}
         onSend={(surveyData: any) => {

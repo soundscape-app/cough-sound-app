@@ -24,23 +24,25 @@ const Result = observer(({ navigation }: any) => {
     }
   }, []);
 
-  if (ProcessStore.loading) return (
-    <View style={styles.container}>
-      {/* <LottieView
-        source={require('./loading-2.json')}
-        style={{ width: 200, height: 200 }}
-        autoPlay loop
-        resizeMode='contain'
-        ref={animation}
-      /> */}
-      <ActivityIndicator size="large" color={BaseStyle.color.theme} />
-      {/* <Image source={Images.loading} style={{ width: 200, height: 200, margin: 50 }} /> */}
-      <Text style={styles.text}>Analyzing...</Text>
-    </View>
-  )
+  // * Loading animation 
+  // if (ProcessStore.loading) return (
+  //   <View style={styles.container}>
+  //     {/* <LottieView
+  //       source={require('./loading-2.json')}
+  //       style={{ width: 200, height: 200 }}
+  //       autoPlay loop
+  //       resizeMode='contain'
+  //       ref={animation}
+  //     /> */}
+  //     <ActivityIndicator size="large" color={BaseStyle.color.theme} />
+  //     {/* <Image source={Images.loading} style={{ width: 200, height: 200, margin: 50 }} /> */}
+  //     <Text style={styles.text}>분석중...</Text>
+  //   </View>
+  // )
   
   return (
     <View style={styles.container}>
+      <Text style={styles.text}>결과 시각화는 서버 구축 이후 보여질 예정입니다.</Text>
         {ProcessStore.result?.result?.highest ? 
           <View style={{ alignItems: 'center', justifyContent: 'center' }}>
             <Text style={styles.title}>{ProcessStore.result?.result?.highest.name}</Text>
@@ -54,9 +56,9 @@ const Result = observer(({ navigation }: any) => {
           <PercentBar key={index} label={item.name} value={item.rate} color={item.color ?? 'black'} />
         )) : null}
       </View>
-      <View style={{ flexDirection: 'row', paddingHorizontal: 16, marginVertical: 20 }}>
+      <View style={{ flexDirection: 'row', paddingHorizontal: 22, marginVertical: 20 }}>
         <Button onPress={() => navigation.replace('Survey')} title={"설문부터\n다시하기"} style={{ flex: 1 }} />
-        <View style={{ width: 8 }} />
+        <View style={{ width: 12 }} />
         <Button onPress={() => navigation.replace('Upload')} title={"녹음부터\n다시하기"} style={{ flex: 1 }} />
       </View>
     </View>

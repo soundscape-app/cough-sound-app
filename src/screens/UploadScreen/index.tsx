@@ -120,6 +120,8 @@ export default function UploadScreen({ navigation }: any) {
         contentInset={{ top: 30, bottom: 30 }}
         curve={shape.curveNatural}
         svg={{ fill: BaseStyle.color.theme }}
+        xMin={data.length - 50}
+        xMax={data.length}
       >
         <Grid />
       </AreaChart>
