@@ -16,8 +16,9 @@ export default function Survey({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      <NativeForms 
-        form="https://form.nativeforms.com/zIXe20jZmQ0ZJpWSJ1Db"
+      { navigation.replace('Upload') }
+      {/* <NativeForms 
+        form="https://my.nativeforms.com/zIXe20jZmQ0ZJpWSJ1Db"
         // formJSON={require('./survey.json')}
         onClose={() => navigation.goBack()}
         onSend={(surveyData: any) => {
@@ -25,7 +26,7 @@ export default function Survey({ navigation }: any) {
           ProcessStore.setSurvey(surveyData);
           navigation.replace('Upload');
         }}
-      />
+      /> */}
     </View>
   );
 }

@@ -60,10 +60,21 @@ export default function UploadScreen({ navigation }: any) {
     setLocation('');
   }
 
+  // async function upload() {
+  //   if (location !== '') {
+  //     navigation.replace('Result');
+  //     ProcessStore.uploadAudio(location).then(() => {
+  //       reset();
+  //     }).catch((e: any) => {
+  //       console.log(e);
+  //     })
+  //   }
+  // }
+
   async function upload() {
     if (location !== '') {
       navigation.replace('Result');
-      ProcessStore.uploadAudio(location).then(() => {
+      ProcessStore.uploadCoughAudio(location).then(() => {
         reset();
       }).catch((e: any) => {
         console.log(e);
@@ -108,7 +119,6 @@ export default function UploadScreen({ navigation }: any) {
     console.log('Recording stopped and stored at', uri);
     console.log('Loading Sound');
     const { sound } = await Audio.Sound.createAsync({ uri });
-    console.log(sound);
     setSound(sound);
   }
 

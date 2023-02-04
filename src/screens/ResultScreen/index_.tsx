@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, Image, ActivityIndicator, Switch } from 'react-native';
+import React from 'react';
+import { StyleSheet, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 
 import EditScreenInfo from '~/components/EditScreenInfo';
 import { Text, View } from '~/components/Themed';
@@ -14,12 +14,8 @@ import { TVideo, ProcessStore } from '~/stores/ProcessStore';
 
 
 const Result = observer(({ navigation }: any) => {
-  const [isCheck, setCheck] = useState(false);
+
   const animation = React.useRef(null);
-  const getCountFromString = (str: string, location: number) => {
-    const subStr = str.split('\n');
-    return subStr[location].split(': ')[1]; 
-  }
 
   React.useEffect(() => {
     ProcessStore.setLoading();
@@ -46,32 +42,24 @@ const Result = observer(({ navigation }: any) => {
   
   return (
     <View style={styles.container}>
-      {ProcessStore.result?.result ? 
+      {ProcessStore.result?.result?.highest ? 
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={styles.title}> 분석 결과 </Text>
-          <Text style={styles.text}> 이벤트 발생 횟수 : { getCountFromString(ProcessStore.result?.result[0], 0) } </Text>
-          <Text style={styles.text}> 기침 횟수 : { getCountFromString(ProcessStore.result?.result[0], 1) } </Text>
-          <View style={{ flexDirection: 'row', paddingHorizontal: 22, marginVertical: 20 }}>
-            <Button onPress={() => setCheck(prev => !prev)}
-              title={isCheck ? "닫기" : "분석 결과 그래프 보기"} 
-              style={{ flex: 1 }} 
-            />
-          </View>
-          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-            {isCheck ? <Image
-              style={{ width: 400, height: 200 }}
-              source={{ uri: ProcessStore.result?.result[1] }}
-            /> : null}
-          </View>
+          <Text style={styles.title}>{ProcessStore.result?.result?.highest.name}</Text>
+          <Text style={styles.text}>일 가능성이</Text>
+          <Text style={styles.title}>{Math.round(ProcessStore.result?.result?.highest.rate*100)}%</Text>
+          <Text style={styles.text}>로 가장 높습니다</Text>
         </View>
       : null}
-
+      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        {ProcessStore.result?.result?.rates ? ProcessStore.result.result.rates.map((item: any, index: number) => (
+          <PercentBar key={index} label={item.name} value={item.rate} color={item.color ?? 'black'} />
+        )) : null}
+      </View>
       <View style={{ flexDirection: 'row', paddingHorizontal: 22, marginVertical: 20 }}>
         <Button onPress={() => navigation.replace('Survey')} title={"설문부터\n다시하기"} style={{ flex: 1 }} />
         <View style={{ width: 12 }} />
         <Button onPress={() => navigation.replace('Upload')} title={"녹음부터\n다시하기"} style={{ flex: 1 }} />
       </View>
-
     </View>
   )
 });
@@ -121,7 +109,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   title: {
-    fontSize: 45,
+    fontSize: 60,
     fontWeight: 'bold',
     color: BaseStyle.color.theme,
     marginBottom: 5,
@@ -129,7 +117,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: BaseStyle.color.subtheme,
+    color: BaseStyle.color.theme,
     marginBottom: 10,
   },
   separator: {
