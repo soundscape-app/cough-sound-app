@@ -3,6 +3,8 @@ import { StyleSheet, Button, ScrollView, Text, TextInput, View } from 'react-nat
 import NativeForms, { NativeFormsModal } from 'native-forms';
 import { ProcessStore } from '~/stores/ProcessStore';
 
+import { BaseStyle } from '~/common';
+
 import Agreement from './agreement';
 
 export default function Survey({ navigation }: any) {
@@ -16,26 +18,52 @@ export default function Survey({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      { navigation.replace('Upload') }
-      {/* <NativeForms 
-        form="https://my.nativeforms.com/zIXe20jZmQ0ZJpWSJ1Db"
-        // formJSON={require('./survey.json')}
+      <NativeForms 
+        formJSON={require('./cough-sound-app-survey.json')}
         onClose={() => navigation.goBack()}
         onSend={(surveyData: any) => {
           console.log(surveyData);
           ProcessStore.setSurvey(surveyData);
           navigation.replace('Upload');
         }}
-      /> */}
+      />
     </View>
   );
 }
 
 
 const styles = StyleSheet.create({
+
+  input: { 
+    height: 40, 
+    borderColor: 'gray', 
+    borderWidth: 1.5, 
+    paddingHorizontal: 10, 
+    marginVertical: 3, 
+    borderRadius: 5,
+  },
+
   container: {
+    backgroundColor: 'white',
     flex: 1,
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    flexDirection: 'row',
     justifyContent: 'center',
+  },
+
+  text: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: BaseStyle.color.theme,
+    marginBottom: 10,
+    marginTop: 20,
+  },
+
+  button: {
+    paddingVertical: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: BaseStyle.color.theme,
+    borderRadius: 8,
   }
 });
