@@ -4,7 +4,6 @@ import { StyleSheet, TouchableOpacity, Image, ActivityIndicator, Switch } from '
 import EditScreenInfo from '~/components/EditScreenInfo';
 import { Text, View } from '~/components/Themed';
 import { RootTabScreenProps } from '~/types';
-// import LottieView from 'lottie-react-native';
 import LottieView from 'lottie-react-native';
 import { VictoryBar, VictoryLabel } from "victory-native";
 import { Images, BaseStyle } from '~/common';
@@ -31,14 +30,13 @@ const Result = observer(({ navigation }: any) => {
   // * Loading animation 
   if (ProcessStore.loading) return (
     <View style={styles.container}>
-      {/* <LottieView
+      <LottieView
         source={require('./loading-2.json')}
         style={{ width: 200, height: 200 }}
         autoPlay loop
         resizeMode='contain'
         ref={animation}
-      /> */}
-      <ActivityIndicator size="large" color={BaseStyle.color.theme} />
+      />
       {/* <Image source={Images.loading} style={{ width: 200, height: 200, margin: 50 }} /> */}
       <Text style={styles.text}>분석중...</Text>
     </View>
@@ -49,7 +47,7 @@ const Result = observer(({ navigation }: any) => {
       {ProcessStore.result?.result ? 
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <Text style={styles.title}> 분석 결과 </Text>
-          <Text style={styles.text}> 이벤트 발생 횟수 : { getCountFromString(ProcessStore.result?.result[0], 0) } </Text>
+          <Text style={styles.text}> 큰소리 발생 횟수 : { getCountFromString(ProcessStore.result?.result[0], 0) } </Text>
           <Text style={styles.text}> 기침 횟수 : { getCountFromString(ProcessStore.result?.result[0], 1) } </Text>
           <View style={{ flexDirection: 'row', paddingHorizontal: 22, marginVertical: 20 }}>
             <Button onPress={() => setCheck(prev => !prev)}
@@ -96,7 +94,6 @@ const PercentBar = ({ label, value, color='black' }: { label: string, value: num
         </View>
       </View>
     </View>
-
   )
 }
 
