@@ -91,9 +91,19 @@ export default function UploadScreen({ navigation }: any) {
         playsInSilentModeIOS: true,
       });
       console.log('Starting recording..');
-      const { recording, status } = await Audio.Recording.createAsync(
-        Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
-      );
+      // const { recording, status } = await Audio.Recording.createAsync(
+      //   Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
+      // );
+
+      const recording = new Audio.Recording();
+      try {
+        await recording.prepareToRecordAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY);
+        await recording.startAsync();
+      }
+      catch (e) {
+        console.log(e);
+      }
+      
       setRecording(recording);
       setIsRecording(true);
       console.log('Recording started');

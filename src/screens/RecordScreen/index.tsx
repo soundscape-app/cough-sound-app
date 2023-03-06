@@ -50,7 +50,7 @@ const Record = observer(() => {
   const recordAudio = async () => {
     try {
       const { recording: recordingObject, status } = await Audio.Recording.createAsync(
-        Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
+        Audio.RecordingOptionsPresets.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
       );
       console.log(status, recordingObject);
       // You are now recording!
@@ -73,9 +73,16 @@ const Record = observer(() => {
       // const recording = new Audio.Recording();
       // await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
       // await recording.startAsync();
-      const { recording, status } = await Audio.Recording.createAsync(
-        Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
-      );
+
+      const recording = new Audio.Recording();
+      try {
+        await recording.prepareToRecordAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY);
+        await recording.startAsync();
+      }
+      catch (e) {
+        console.log(e);
+      }
+
       setRecording(recording);
       console.log('Recording started');
 
