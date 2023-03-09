@@ -2,7 +2,7 @@
   "expo": {
     "name": "cough",
     "slug": "cough",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "orientation": "portrait",
     "icon": "./assets/images/icon-temp.png",
     "scheme": "cough",

@@ -47,8 +47,8 @@ const Result = observer(({ navigation }: any) => {
       {ProcessStore.result?.result ? 
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <Text style={styles.title}> 분석 결과 </Text>
-          <Text style={styles.text}> 큰소리 발생 횟수 : { getCountFromString(ProcessStore.result?.result[0], 0) } </Text>
-          <Text style={styles.text}> 기침 횟수 : { getCountFromString(ProcessStore.result?.result[0], 1) } </Text>
+          <Text style={styles.text}> 큰소리 발생 횟수 : { ProcessStore.result?.result?.event_counts } </Text>
+          <Text style={styles.text}> 기침 횟수 : { ProcessStore.result?.result?.cough_counts } </Text>
           <View style={{ flexDirection: 'row', paddingHorizontal: 22, marginVertical: 20 }}>
             <Button onPress={() => setCheck(prev => !prev)}
               title={isCheck ? "닫기" : "분석 결과 그래프 보기"} 
@@ -58,7 +58,7 @@ const Result = observer(({ navigation }: any) => {
           <View style={{ alignItems: 'center', justifyContent: 'center' }}>
             {isCheck ? <Image
               style={{ width: 400, height: 200 }}
-              source={{ uri: ProcessStore.result?.result[1] }}
+              source={{ uri: "data:image/png;base64," + ProcessStore.result?.result?.image }}
             /> : null}
           </View>
         </View>
