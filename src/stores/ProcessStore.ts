@@ -28,6 +28,7 @@ export const ProcessStore: any = observable({
 
     survey: {} as Object,
     result: {} as Object,
+    resultCough: {} as Object,
     loading: false,
 
     setLoading: action((loading: boolean = true) => {
@@ -80,9 +81,30 @@ export const ProcessStore: any = observable({
             formData.append('survey', JSON.stringify(survey))
             console.log('[Starting upload]');
             const data = await Request.post('/upload/audio_detect_cough', formData);
-            ProcessStore.result = _.cloneDeep(data);
+            ProcessStore.resultCough = _.cloneDeep(data);
             console.log('[Upload completed]');
             ProcessStore.loading = false;
+        } catch (e) {
+            console.log(e);
+        }
+    }),
+
+    uploadCoughPredictionAudio: action(async (location: string, survey: Object=ProcessStore.survey) => {
+        try {
+            ProcessStore.loading = true;
+            const formData = new FormData();
+            const ext = location.split('.').pop();
+            formData.append('audio', {
+                uri: location,
+                name: 'audio.' + ext,
+                type: 'audio/' + ext,
+            });
+            formData.append('survey', JSON.stringify(survey))
+            console.log('[Starting upload]');
+            const data = await Request.post('/upload/audio_predict', formData);
+            ProcessStore.result = _.cloneDeep(data);
+            console.log('[Upload completed]');
+            // ProcessStore.loading = false;
         } catch (e) {
             console.log(e);
         }

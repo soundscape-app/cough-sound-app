@@ -71,10 +71,26 @@ export default function UploadScreen({ navigation }: any) {
   //   }
   // }
 
+  // async function upload() {
+  //   if (location !== '') {
+  //     navigation.replace('Result');
+  //     ProcessStore.uploadCoughAudio(location).then(() => {
+  //       reset();
+  //     }).catch((e: any) => {
+  //       console.log(e);
+  //     })
+  //   }
+  // }
+  
   async function upload() {
     if (location !== '') {
       navigation.replace('Result');
-      ProcessStore.uploadCoughAudio(location).then(() => {
+      await ProcessStore.uploadCoughPredictionAudio(location).then(() => {
+        reset();
+      }).catch((e: any) => {
+        console.log(e);
+      })
+      await ProcessStore.uploadCoughAudio(location).then(() => {
         reset();
       }).catch((e: any) => {
         console.log(e);
