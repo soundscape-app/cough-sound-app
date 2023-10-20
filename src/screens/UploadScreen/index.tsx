@@ -60,10 +60,37 @@ export default function UploadScreen({ navigation }: any) {
     setLocation('');
   }
 
+  // async function upload() {
+  //   if (location !== '') {
+  //     navigation.replace('Result');
+  //     ProcessStore.uploadAudio(location).then(() => {
+  //       reset();
+  //     }).catch((e: any) => {
+  //       console.log(e);
+  //     })
+  //   }
+  // }
+
+  // async function upload() {
+  //   if (location !== '') {
+  //     navigation.replace('Result');
+  //     ProcessStore.uploadCoughAudio(location).then(() => {
+  //       reset();
+  //     }).catch((e: any) => {
+  //       console.log(e);
+  //     })
+  //   }
+  // }
+  
   async function upload() {
     if (location !== '') {
       navigation.replace('Result');
-      ProcessStore.uploadAudio(location).then(() => {
+      await ProcessStore.uploadCoughPredictionAudio(location).then(() => {
+        reset();
+      }).catch((e: any) => {
+        console.log(e);
+      })
+      await ProcessStore.uploadCoughAudio(location).then(() => {
         reset();
       }).catch((e: any) => {
         console.log(e);
@@ -80,9 +107,19 @@ export default function UploadScreen({ navigation }: any) {
         playsInSilentModeIOS: true,
       });
       console.log('Starting recording..');
-      const { recording, status } = await Audio.Recording.createAsync(
-        Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
-      );
+      // const { recording, status } = await Audio.Recording.createAsync(
+      //   Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
+      // );
+
+      const recording = new Audio.Recording();
+      try {
+        await recording.prepareToRecordAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY);
+        await recording.startAsync();
+      }
+      catch (e) {
+        console.log(e);
+      }
+      
       setRecording(recording);
       setIsRecording(true);
       console.log('Recording started');
@@ -108,7 +145,6 @@ export default function UploadScreen({ navigation }: any) {
     console.log('Recording stopped and stored at', uri);
     console.log('Loading Sound');
     const { sound } = await Audio.Sound.createAsync({ uri });
-    console.log(sound);
     setSound(sound);
   }
 
@@ -120,6 +156,8 @@ export default function UploadScreen({ navigation }: any) {
         contentInset={{ top: 30, bottom: 30 }}
         curve={shape.curveNatural}
         svg={{ fill: BaseStyle.color.theme }}
+        xMin={data.length - 50}
+        xMax={data.length}
       >
         <Grid />
       </AreaChart>

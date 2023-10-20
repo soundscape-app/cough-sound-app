@@ -11,6 +11,8 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+struct-cough-sound.drawio
+struct-cough-sound.png
 
 # macOS
 .DS_Store

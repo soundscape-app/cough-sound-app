@@ -192,7 +192,7 @@ const Upload = observer(() => {
         <RowData title="Duration" data={`${status?.durationMillis * 0.001} s`} />
         <RowData title="Level" data={`${status?.metering ?? ''} dB`} />
       </View>
-      <AudioLevel level={status?.metering ?? 0} />
+      <AudioLevel level={-status?.metering ?? 0} />
       <View style={{ backgroundColor: 'transparent', alignItems: 'center', margin: 10}}>
         <Text>STOP을 누르면 음성이 업로드 됩니다.</Text>
       </View>

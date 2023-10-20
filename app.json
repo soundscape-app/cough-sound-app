@@ -2,13 +2,13 @@
   "expo": {
     "name": "cough",
     "slug": "cough",
-    "version": "1.0.6",
+    "version": "1.0.9",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/icon-temp.png",
     "scheme": "cough",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/splash-alter.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -34,6 +34,11 @@
     },
     "plugins": [
       "sentry-expo"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "d819113d-c3ee-4bb3-97d3-66b000b57ca7"
+      }
+    }
   }
 }

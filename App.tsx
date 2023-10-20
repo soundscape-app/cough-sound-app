@@ -16,7 +16,6 @@ export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
-
   React.useEffect(() => {
 
     // await Facebook.initializeAsync({

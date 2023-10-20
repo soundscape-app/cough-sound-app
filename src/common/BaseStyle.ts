@@ -17,6 +17,7 @@ export default {
   color: {
     ...OpenColor,
     theme: 'rgba(25, 132, 213, 0.8)',
+    subtheme: 'rgba(29, 163, 237, 0.8)',
     primary: '#000000',
     lightPurple: '#6D48F0',
     purple: 'rgb(85, 51, 207)',
