@@ -204,7 +204,7 @@ const Record = observer(() => {
       </View>
       <AudioLevel level={status?.metering ?? 0} />
       <View style={{ backgroundColor: 'transparent', alignItems: 'center', margin: 10}}>
-        <Text>업로드 후 결과 확인 기능은 준비중입니다.</Text>
+        <Text>The feature to check the results after uploading is currently under preparation.</Text>
       </View>
       <MainButton onPress={playSound} title="START" />
       <MainButton onPress={stopSound} title="STOP" />

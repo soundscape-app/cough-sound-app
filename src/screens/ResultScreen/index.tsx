@@ -39,7 +39,7 @@ const Result = observer(({ navigation }: any) => {
         ref={animation}
       />
       {/* <Image source={Images.loading} style={{ width: 200, height: 200, margin: 50 }} /> */}
-      <Text style={{ color: BaseStyle.color.theme, fontSize: 18, fontWeight:'bold'}}>분석중...</Text>
+      <Text style={{ color: BaseStyle.color.theme, fontSize: 18, fontWeight:'bold'}}>Analyzing...</Text>
     </View>
   )
   
@@ -48,40 +48,45 @@ const Result = observer(({ navigation }: any) => {
       {ProcessStore.result?.result ? 
         <View style={{ flex: 6, marginHorizontal: 20, }}>
           <ScrollView style={{ flex: 1 }}>
-            <Text style={styles.title}>분석 결과 </Text>
+            <Text style={styles.title}> Analysis Result </Text>
             <View style={styles.resultContainer}>        
               <View style={{ marginBottom: 40, marginTop: 15, }}>
-                <Text style={styles.text}>[ 질병 분석 ]</Text>
-                <PercentBar label='정상' value={ProcessStore?.result?.result?.probs[1]} color='#3b76db' />
-                <PercentBar label='폐렴' value={ProcessStore?.result?.result?.probs[0]} color='#FC2666' />
+                <Text style={styles.text}>[ Disease Analysis ]</Text>
+                <PercentBar label='Normal' value={ProcessStore?.result?.result?.probs[1]} color='#3b76db' />
+                <PercentBar label='Pneumonia' value={ProcessStore?.result?.result?.probs[0]} color='#FC2666' />
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', alignContent: 'center', marginTop: 10 }}>
-                  <Text style={{ fontSize: 16 }}>질병 분석 결과 </Text>
+                  <Text style={{ fontSize: 16 }}> Disease Analysis Result: </Text>
                   {ProcessStore?.result?.result?.probs[1] > ProcessStore?.result?.result?.probs[0] ? 
-                    <Text style={{ fontSize: 22, color: '#3b76db', fontWeight: 'bold' }}>정상 </Text> 
-                    : <Text style={{ fontSize: 22, color: '#fc2666', fontWeight: 'bold' }}>폐렴 </Text>}
-                  <Text style={{ fontSize: 16 }}>으로 추정됩니다.</Text>
+                    <Text style={{ fontSize: 18, color: '#3b76db', fontWeight: 'bold' }}> Normal </Text> 
+                    : <Text style={{ fontSize: 18, color: '#fc2666', fontWeight: 'bold' }}> Pneumonia </Text>}
+                  <Text style={{ fontSize: 16 }}>
+                    {ProcessStore?.result?.result?.probs[1] > ProcessStore?.result?.result?.probs[0] ? 
+                      'is likely.' 
+                      : 'is suspected.'}
+                  </Text>
                 </View>
               </View>
 
               <View style={{ marginBottom: 40 }}>
-                <Text style={styles.text}>[ 음원 분석 ]</Text>
-                <PercentBar label='타인 기침' value={ProcessStore?.result?.result?.probs[2]} color='#a088e3' />
-                <PercentBar label='잡음' value={ProcessStore?.result?.result?.probs[3]} color='#a088e3' />
+                <Text style={styles.text}>[ Sound Analysis ]</Text>
+                <PercentBar label='Coughing from others' value={ProcessStore?.result?.result?.probs[2]} color='#a088e3' />
+                <PercentBar label='Noise' value={ProcessStore?.result?.result?.probs[3]} color='#a088e3' />
               </View>
 
-              <Text style={styles.text}>[ 기침 횟수 분석 ]</Text>
+              <Text style={styles.text}>[ Cough Analysis ]</Text>
               <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
-                <Text style={{ fontSize: 16, marginLeft: 20, color: BaseStyle.color.subtheme, fontWeight: 'bold' }}> 큰소리 횟수 : </Text>
-                <Text style={{ fontSize: 16, marginRight: 20, color: BaseStyle.color.subtheme, fontWeight: 'bold' }}>{ ProcessStore.resultCough?.result?.event_counts }회 </Text> 
+                <Text style={{ fontSize: 16, marginLeft: 20, color: BaseStyle.color.subtheme, fontWeight: 'bold' }}> Loud Sounds: </Text>
+                <Text style={{ fontSize: 16, marginRight: 20, color: BaseStyle.color.subtheme, fontWeight: 'bold' }}>{ ProcessStore.resultCough?.result?.event_counts === 1 ? '1 time' : `${ProcessStore.resultCough?.result?.event_counts} times` }</Text> 
               </View>
               <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text style={{ fontSize: 16, marginLeft: 20, color: BaseStyle.color.theme, fontWeight: 'bold' }}> 기침 횟수 : </Text>
-                <Text style={{ fontSize: 16, marginRight: 20, color: BaseStyle.color.theme, fontWeight: 'bold' }}>{ ProcessStore.resultCough?.result?.cough_counts }회 </Text> 
+                <Text style={{ fontSize: 16, marginLeft: 20, color: BaseStyle.color.theme, fontWeight: 'bold' }}> Cough Count: </Text>
+                <Text style={{ fontSize: 16, marginRight: 20, color: BaseStyle.color.theme, fontWeight: 'bold' }}>{ ProcessStore.resultCough?.result?.cough_counts === 1 ? '1 time' : `${ProcessStore.resultCough?.result?.cough_counts} times` }</Text> 
               </View>
+
 
               <View style={{ flex: 1, paddingHorizontal: 22, marginVertical: 20 }}>
                 <Button onPress={() => setCheck(prev => !prev)}
-                  title={isCheck ? "닫기" : "분석 결과 그래프 보기"} 
+                  title={isCheck ? "Close" : "View Analysis Graph"} 
                   style={{ flex: 1 }} 
                 />
               </View>
@@ -96,11 +101,10 @@ const Result = observer(({ navigation }: any) => {
         </View>
       : null}
       <View style={{ flex: 0.5, flexDirection: 'row', paddingHorizontal: 25, marginVertical: 30 }}>
-        <Button onPress={() => navigation.replace('Survey')} title={"설문부터\n다시하기"} style={{ flex: 1 }} />
+        <Button onPress={() => navigation.replace('Survey')} title={"Restart Survey"} style={{ flex: 1, textAlign: 'center' }} />
         <View style={{ width: 12 }} />
-        <Button onPress={() => navigation.replace('Upload')} title={"녹음부터\n다시하기"} style={{ flex: 1 }} />
+        <Button onPress={() => navigation.replace('Upload')} title={"Restart Recording"} style={{ flex: 1, textAlign: 'center' }} />
       </View>
-
     </View>
   )
 });
@@ -108,25 +112,25 @@ const Result = observer(({ navigation }: any) => {
 
 const PercentBar = ({ label, value, color='black' }: { label: string, value: number, color?: string }) => {
 
-  const [parentWeight, setParentWidth] = React.useState(0);
+  const [parentWidth, setParentWidth] = React.useState(0);
   const onLayout = (event: any) => {
     const { width } = event.nativeEvent.layout;
     setParentWidth(width);
   };
 
   return (
-    <View style={{ flex: 1, flexDirection: 'row', height: 35, alignItems: 'center', paddingHorizontal: 16, marginVertical: 4 }}>
-      <Text style={{ flex: 1, color: color, fontWeight: 'bold' }}>{label}</Text>
+    <View style={{ flex: 1, flexDirection: 'row', height: 35, alignItems: 'center', paddingHorizontal: 8, marginVertical: 4 }}>
+      <Text style={{ flex: 1.5, color: color, fontWeight: 'bold', paddingRight: 8 }}>{label}</Text>
       <View style={{ flex: 4, height: 30, flexDirection: 'row', alignItems: 'center' }} onLayout={onLayout}>
-        <View style={{ width: parentWeight, height: 30, backgroundColor: color, opacity: 0.2, borderRadius: 8 }} />
-        <View style={{ width: parentWeight * value, height: 30, backgroundColor: color, borderRadius: 8, position: 'absolute', justifyContent: 'center', alignItems: 'flex-end'}} >
+        <View style={{ width: parentWidth * value, height: 30, backgroundColor: color, borderRadius: 8, position: 'absolute', justifyContent: 'center', alignItems: 'flex-end'}} >
           {value > 0.1 && <Text style={{ color: 'white', paddingHorizontal: 4, fontSize: 12 }} numberOfLines={1}>{Math.round(value * 100)}%</Text>}
-          {value <= 0.1 && <Text style={{ color: color, paddingHorizontal: 4, fontSize: 12, marginRight: -parentWeight*0.1 }} numberOfLines={1}>{Math.round(value * 100)}%</Text>}
+          {value <= 0.1 && <Text style={{ color: color, paddingHorizontal: 4, fontSize: 12, marginRight: -parentWidth*0.1 }} numberOfLines={1}>{Math.round(value * 100)}%</Text>}
         </View>
       </View>
     </View>
   )
 }
+
 
 
 const Button = ({ onPress, title, style }: any) => (
@@ -135,7 +139,7 @@ const Button = ({ onPress, title, style }: any) => (
     style={{ ...styles.button, ...style }}
     activeOpacity={0.7}
   >
-    <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 18, lineHeight: 20 }}>{title}</Text>
+    <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 15, lineHeight: 20 }}>{title}</Text>
   </TouchableOpacity>
 );
 
@@ -151,13 +155,13 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: 'center',
-    fontSize: 45,
+    fontSize: 40,
     fontWeight: 'bold',
     color: BaseStyle.color.theme,
     marginBottom: 5,
   },
   text: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#383f4a',
     marginBottom: 10,

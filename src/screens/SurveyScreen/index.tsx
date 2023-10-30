@@ -19,7 +19,7 @@ export default function Survey({ navigation }: any) {
   return (
     <View style={styles.container}>
       <NativeForms 
-        formJSON={require('./cough-sound-app-survey.json')}
+        formJSON={require('./cough-sound-app-survey-eng.json')}
         onClose={() => navigation.goBack()}
         onSend={(surveyData: any) => {
           console.log(surveyData);
